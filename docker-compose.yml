@@ -1,0 +1,25 @@
+version: '2'
+
+services:
+  portainer:
+    image: portainer/portainer
+    command: -H unix:///var/run/docker.sock
+    restart: always
+    ports:
+      - ${PORT}:9000
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+    environment:
+      VIRTUAL_HOST: ${LETSENCRYPT_HOST} 
+      LETSENCRYPT_HOST: ${LETSENCRYPT_HOST} 
+      LETSENCRYPT_EMAIL: ${LETSENCRYPT_EMAIL} 
+
+volumes:
+  portainer_data:
+
+networks:
+    default:
+        external:
+            name: nginx-proxy
+
